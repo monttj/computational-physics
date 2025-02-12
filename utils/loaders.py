@@ -1,8 +1,8 @@
 import pickle
 import os
+from tensorflow.keras.datasets import mnist, cifar100, cifar10
+from tensorflow.keras.preprocessing.image import ImageDataGenerator, load_img, save_img, img_to_array
 
-from keras.datasets import mnist, cifar100,cifar10
-from keras.preprocessing.image import ImageDataGenerator, load_img, save_img, img_to_array
 
 import pandas as pd
 
@@ -13,9 +13,9 @@ import h5py
 import scipy
 from glob import glob
 
-from keras.applications import vgg19
-from keras import backend as K
-from keras.utils import to_categorical
+from tensorflow.keras.applications import vgg19
+from tensorflow.keras import backend as K
+from tensorflow.keras.utils import to_categorical
 
 import pdb
 
@@ -62,7 +62,7 @@ class DataLoader():
 
     def load_data(self, domain, batch_size=1, is_testing=False):
         data_type = "train%s" % domain if not is_testing else "test%s" % domain
-        path = glob('./data/%s/%s/*' % (self.dataset_name, data_type))
+        path = glob('./data/%s/%s/*.npy' % (self.dataset_name, data_type))
 
         batch_images = np.random.choice(path, size=batch_size)
 
@@ -178,43 +178,45 @@ def load_fashion_mnist(input_rows, input_cols, path='./data/fashion/fashion-mnis
     return X_train, y_train
 
 def load_safari(folder):
-
     mypath = os.path.join("./data", folder)
-    txt_name_list = []
-    for (dirpath, dirnames, filenames) in walk(mypath):
-        for f in filenames:
-            if f != '.DS_Store':
-                txt_name_list.append(f)
-                break
+    txt_name_list = glob(os.path.join(mypath, "*.npy"))
 
-    slice_train = int(80000/len(txt_name_list))  ###Setting value to be 80000 for the final dataset
+    if not txt_name_list:
+        print("No .npy files found in", mypath)
+        return np.array([]), np.array([])
+
+    slice_train = int(80000 / len(txt_name_list))
     i = 0
     seed = np.random.randint(1, 10e6)
 
     for txt_name in txt_name_list:
-        txt_path = os.path.join(mypath,txt_name)
-        x = np.load(txt_path)
-        x = (x.astype('float32') - 127.5) / 127.5
-        # x = x.astype('float32') / 255.0
-        
-        x = x.reshape(x.shape[0], 28, 28, 1)
-        
-        y = [i] * len(x)  
-        np.random.seed(seed)
-        np.random.shuffle(x)
-        np.random.seed(seed)
-        np.random.shuffle(y)
-        x = x[:slice_train]
-        y = y[:slice_train]
-        if i != 0: 
-            xtotal = np.concatenate((x,xtotal), axis=0)
-            ytotal = np.concatenate((y,ytotal), axis=0)
-        else:
-            xtotal = x
-            ytotal = y
-        i += 1
-        
+        try:
+            x = np.load(txt_name, allow_pickle=True)
+            x = (x.astype('float32') - 127.5) / 127.5
+            x = x.reshape(x.shape[0], 28, 28, 1)
+            y = [i] * len(x)
+            
+            np.random.seed(seed)
+            np.random.shuffle(x)
+            np.random.seed(seed)
+            np.random.shuffle(y)
+
+            x = x[:slice_train]
+            y = y[:slice_train]
+
+            if i != 0:
+                xtotal = np.concatenate((x, xtotal), axis=0)
+                ytotal = np.concatenate((y, ytotal), axis=0)
+            else:
+                xtotal = x
+                ytotal = y
+            i += 1
+        except Exception as e:
+            print(f"Error loading {txt_name}: {e}")
+            continue
+
     return xtotal, ytotal
+
 
 
 

@@ -179,11 +179,11 @@ class GAN():
        
     def get_opti(self, lr):
         if self.optimiser == 'adam':
-            opti = Adam(lr=lr, beta_1=0.5)
+            opti = Adam(learning_rate=lr, beta_1=0.5)
         elif self.optimiser == 'rmsprop':
-            opti = RMSprop(lr=lr)
+            opti = RMSprop(learning_rate=lr)
         else:
-            opti = Adam(lr=lr)
+            opti = Adam(learning_rate=lr)
 
         return opti
 
