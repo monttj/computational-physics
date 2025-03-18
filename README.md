@@ -3,7 +3,7 @@
 ## ssh access
 If you have accout for server @HYU\_PHY, you can access the server using the following command:
 ```bash
-ssh -X -Y {YourID}@{ServerIP}
+ssh -Y {YourID}@{ServerIP}
 ```
 
 ## Environment set up
