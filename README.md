@@ -48,7 +48,7 @@ You should check which port number is opened for jupyter notebook.
 
 2. At your local computer
 ```
-ssh -NL {Port}:localhost:{Port} {YourID}@{ServerIP}
+ssh -f -N -L localhost:{Port}:localhost:{Port} {YourID}@{ServerIP}
 ```
 
 3. Open a new browser and copy and paste the url from the step 1.
