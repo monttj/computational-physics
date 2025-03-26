@@ -10,9 +10,9 @@ ssh -X -Y {YourID}@{ServerIP}
 If you don't have accout, follow these steps to set up the necessary environment:
 
 ### Prerequisite
-- Python == 3.6.5
-- cudnn == 7
-- cudatoolkit == 9.0
+- Python == 3.9.21
+- cudnn == 8.9.7.29
+- cudatoolkit == 11.8
 
 ### Anaconda set up
 You need to install anaconda.
@@ -31,7 +31,7 @@ You can set up the environment using the provided 'env.yaml' file.
 ```
 # create conda environment with env.yaml file
 conda env create --file env.yaml
-conda activate py36-cuda9.0 # this env name is set in env.yaml file.
+conda activate py39-cuda12.8 # this env name is set in env.yaml file.
 ```
 
 ## Usage
@@ -41,7 +41,7 @@ conda activate py36-cuda9.0 # this env name is set in env.yaml file.
 To use Jupyter Notebook:
 1. At the server
 ```
-conda activate py36-cuda9.0
+conda activate py39-cuda12.8
 jupyter notebook --no-browser
 ```
 You should check which port number is opened for jupyter notebook.
