@@ -26,7 +26,7 @@ sh Anaconda3-2022.10-Linux-x86_64.sh
 export PATH=/opt/anaconda3/bin/:$PATH
 ```
 
-In your conda environment, need to install tensorflow, Keras, Jupyter notebook, ipykernel. 
+In your conda environment, need to install tensorflow, Keras, Jupyter notebook, ipykernel.
 You can set up the environment using the provided 'env.yaml' file.
 ```
 # create conda environment with env.yaml file
