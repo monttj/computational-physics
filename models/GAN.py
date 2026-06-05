@@ -125,7 +125,7 @@ class GAN():
 
         x = generator_input
 
-        x = Dense(np.prod(self.generator_initial_dense_layer_size), kernel_initializer = self.weight_init)(x)
+        x = Dense(int(np.prod(self.generator_initial_dense_layer_size)), kernel_initializer = self.weight_init)(x)
 
         if self.generator_batch_norm_momentum:
             x = BatchNormalization(momentum = self.generator_batch_norm_momentum)(x)
@@ -263,8 +263,8 @@ class GAN():
 
             if epoch % print_every_n_batches == 0:
                 self.sample_images(run_folder)
-                self.model.save_weights(os.path.join(run_folder, 'weights/weights-%d.h5' % (epoch)))
-                self.model.save_weights(os.path.join(run_folder, 'weights/weights.h5'))
+                self.model.save_weights(os.path.join(run_folder, 'weights/weights-%d.weights.h5' % (epoch)))
+                self.model.save_weights(os.path.join(run_folder, 'weights/weights.weights.h5'))
                 self.save_model(run_folder)
 
             self.epoch += 1
